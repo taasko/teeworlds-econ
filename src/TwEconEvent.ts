@@ -1,0 +1,23 @@
+
+export interface TwEconEvent {
+    // TODO: Event type specific typings.
+    ip: string;
+    port: number;
+    clientId: number;
+    clientName: string;
+    clientVersion: string;
+    text: string;
+    server: string;
+    reason: string;
+    matchType: string;
+    teamplay: string;
+    mapName: string;
+    teamId: number;
+    itemId: number;
+    victimId: number;
+    victimName: string;
+    weaponId: number;
+    special: number;
+    redCount: number;
+    blueCount: number;
+}

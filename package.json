@@ -1,0 +1,34 @@
+{
+  "name": "teeworlds-econ-api",
+  "version": "0.0.1",
+  "description": "Javascript API for interacting with Teeworlds servers",
+  "main": "./build/index.js",
+  "license": "MIT",
+  "author": "Richard Lewis",
+  "scripts": {
+    "dev": "tsc --watch & DEBUG=tw:* NODE_ENV=development nodemon",
+    "lint": "tslint -c ./tslint.json 'src/**/*.ts'"
+  },
+  "devDependencies": {
+    "@types/api-error-handler": "^1.0.32",
+    "@types/cors": "^2.8.6",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^13.9.8",
+    "@types/socket.io": "^2.1.4",
+    "api-error-handler": "^1.0.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "kill-port": "^1.6.0",
+    "nodemon": "^2.0.2",
+    "socket.io": "^2.3.0",
+    "tslint": "^6.1.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-consistent-codestyle": "^1.16.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "eventemitter2": "^6.3.1"
+  }
+}
