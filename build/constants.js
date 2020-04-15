@@ -1,11 +1,11 @@
-
-export const TEAMS = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TEAMS = {
     SPECTATE: -1,
     RED: 0,
     BLUE: 1,
 };
-
-export const PICKUPS = {
+exports.PICKUPS = {
     HEART: 0,
     SHIELD: 1,
     GRENADE_LAUNCHER: 2,
@@ -13,8 +13,7 @@ export const PICKUPS = {
     LASER: 4,
     KATANA: 5,
 };
-
-export const WEAPONS = {
+exports.WEAPONS = {
     TEAM_SWITCH: -3,
     DEATHTILE: -1,
     HAMMER: 0,
@@ -24,10 +23,8 @@ export const WEAPONS = {
     LASER: 4,
     KATANA: 4,
 };
-
-
 // Teeworlds Settings Defaults
-export const TW_SETTINGS = [
+exports.TW_SETTINGS = [
     {
         id: "sv_warmup",
         name: "Warmup",
@@ -56,11 +53,11 @@ export const TW_SETTINGS = [
         default: "dm",
         type: "choice",
         choices: [
-            {value: "dm", name: "DM"},
-            {value: "ctf", name: "CTF"},
-            {value: "tdm", name: "TDM"},
-            {value: "lms", name: "LMS"},
-            {value: "lts", name: "LTS"},
+            { value: "dm", name: "DM" },
+            { value: "ctf", name: "CTF" },
+            { value: "tdm", name: "TDM" },
+            { value: "lms", name: "LMS" },
+            { value: "lts", name: "LTS" },
         ],
     },
     {
@@ -140,9 +137,9 @@ export const TW_SETTINGS = [
         default: "1",
         type: "choice",
         choices: [
-            {value: 0, name: "Casual"},
-            {value: 1, name: "Normal"},
-            {value: 2, name: "Competitive"},
+            { value: 0, name: "Casual" },
+            { value: 1, name: "Normal" },
+            { value: 2, name: "Competitive" },
         ],
     },
     {
@@ -201,9 +198,9 @@ export const TW_SETTINGS = [
         default: "1",
         type: "choice",
         choices: [
-            {value: 0, name: "Move to spectator"},
-            {value: 1, name: "Move to free spectator slot/kick"},
-            {value: 2, name: "Kick"},
+            { value: 0, name: "Move to spectator" },
+            { value: 1, name: "Move to free spectator slot/kick" },
+            { value: 2, name: "Kick" },
         ],
     },
     {
@@ -221,7 +218,6 @@ export const TW_SETTINGS = [
         type: "number",
     },
 ];
-
 // Functions to transform a regex match to a different data type. These could
 // be any functions but currently we only need to convert to numbers.
 const DEFAULT_TRANSFORMS = {
@@ -236,15 +232,12 @@ const DEFAULT_TRANSFORMS = {
     blueCount: Number,
     special: Number,
 };
-
 // Regex for chat messages
-export const CHAT_REGEX = new RegExp(/(?<clientId>\d{1,2}):(?<UNKNOWN>\d{1,2}):(?<clientName>.*): (?<text>.*)/);
-
+exports.CHAT_REGEX = new RegExp(/(?<clientId>\d{1,2}):(?<UNKNOWN>\d{1,2}):(?<clientName>.*): (?<text>.*)/);
 // Regex for detecting a line with an event that we want to handle
-export const EVENT_LINE_REGEX = new RegExp(/\[(?<eventType>[^\].]*)\]:\W?(?<eventData>.*)/);
-
+exports.EVENT_LINE_REGEX = new RegExp(/\[(?<eventType>[^\].]*)\]:\W?(?<eventData>.*)/);
 // Regexes for matching data from specific econ events
-export const EVENT_HANDLERS = {
+exports.EVENT_HANDLERS = {
     "generic": [
         {
             name: "password_request",
@@ -312,7 +305,6 @@ export const EVENT_HANDLERS = {
         },
     ],
     "server": [
-
         {
             name: "player_ready",
             regex: new RegExp(/player is ready\. ClientID=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5})/),
@@ -338,7 +330,7 @@ export const EVENT_HANDLERS = {
     "chat": [
         {
             name: "chat",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -350,14 +342,14 @@ export const EVENT_HANDLERS = {
     "teamchat": [
         {
             name: "teamchat",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
     "whisper": [
         {
             name: "whisper",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
@@ -379,16 +371,12 @@ export const EVENT_HANDLERS = {
         },
         {
             name: "team_join",
-            regex: new RegExp(
-                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/,
-            ),
+            regex: new RegExp(/team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "team_join",
-            regex: new RegExp(
-                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/,
-            ),
+            regex: new RegExp(/team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -438,3 +426,4 @@ export const EVENT_HANDLERS = {
         },
     ],
 };
+//# sourceMappingURL=constants.js.map
