@@ -377,6 +377,15 @@ export const EVENT_HANDLERS = {
             transforms: DEFAULT_TRANSFORMS,
         },
         {
+            // New team join format
+            name: "team_join",
+            regex: new RegExp(
+                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/,
+            ),
+            transforms: DEFAULT_TRANSFORMS,
+        },
+        {
+            // Old team join format
             name: "team_join",
             regex: new RegExp(
                 /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/,
