@@ -178,7 +178,7 @@ export class TwEconClient extends EventEmitter2 {
 
         // Create the Promise, listen for output and run the command.
         const promise = new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => reject("Transaction timed out"), timeout);
+            const timeoutId = setTimeout(() => reject(`Transaction timed out. Command: ${command}`), timeout);
 
             const listener = (consoleMessage: any) => {
                 const text = consoleMessage.text;

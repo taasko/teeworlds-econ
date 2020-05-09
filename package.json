@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Javascript API for interacting with Teeworlds servers",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.js",
   "license": "MIT",
   "author": "Richard Lewis",
   "scripts": {
