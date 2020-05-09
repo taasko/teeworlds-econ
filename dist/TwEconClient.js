@@ -86,7 +86,7 @@ class TwEconClient extends eventemitter2_1.EventEmitter2 {
         // If line was matched, set the name and data
         if (match && match.groups && match.groups.eventType && match.groups.eventData) {
             eventType = match.groups.eventType.toLowerCase();
-            eventData = match.groups.eventData.toLowerCase();
+            eventData = match.groups.eventData;
         }
         else {
             eventType = "generic";
@@ -129,46 +129,48 @@ class TwEconClient extends eventemitter2_1.EventEmitter2 {
     }
     transaction(command) {
         /*
-        Send a command and return each reply line outputted by the command via
+        Send a command and return each reply event outputted by the command via
         a Promise. Will reject if response is not received within 2 seconds.
         */
         const id = Date.now() + Math.random();
         const data = `echo "begin ${id}"; ${command}; echo "end ${id}"`;
-        const lines = [];
+        const capturedEvents = [];
         const timeout = 2000;
         let started = false;
         // Create the Promise, listen for output and run the command.
         const promise = new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => reject(`Transaction timed out. Command: ${command}`), timeout);
-            const listener = (consoleMessage) => {
-                const text = consoleMessage.text;
-                if (text === `[Console]: begin ${id}`) {
+            const timeoutId = setTimeout(() => reject(`Transaction for command "${command}" timed out.`), timeout);
+            // Listen to all events
+            this.onAny((eventName, eventData) => {
+                // Detect transaction start and end
+                if (eventName === "console.unknown" && eventData.text === `begin ${id}`) {
                     started = true;
                     return;
                 }
-                if (text === `[Console]: end ${id}`) {
+                else if (eventName === "console.unknown" && eventData.text === `end ${id}`) {
                     clearTimeout(timeoutId);
-                    resolve(lines);
+                    resolve(capturedEvents);
                     return;
                 }
-                if (started && text.startsWith("[Console]:")) {
-                    lines.push(text);
+                // Capture events that are part of this transaction
+                if (started) {
+                    capturedEvents.push({
+                        name: eventName,
+                        data: eventData,
+                    });
                 }
-            };
-            this.on("socket.receive", listener);
+            });
             this.send(data);
         });
         return promise;
     }
     getSetting(name) {
         // Convenience transaction wrapper that returns the value of a server setting.
-        return this.transaction(name).then((lines) => {
-            const start = "[Console]: Value: ";
-            for (const line of lines) {
-                if (line.startsWith(start)) {
-                    const data = line.substr(start.length);
-                    return data;
-                }
+        return this.transaction(name).then((events) => {
+            // TODO: fix any
+            const event = events.find((e) => e.name === "console.value");
+            if (event) {
+                return event.data.value;
             }
             return null;
         });

@@ -97,6 +97,21 @@ export declare const EVENT_HANDLERS: {
             special: NumberConstructor;
         };
     }[];
+    console: {
+        name: string;
+        regex: RegExp;
+        transforms: {
+            port: NumberConstructor;
+            clientId: NumberConstructor;
+            teamId: NumberConstructor;
+            victimId: NumberConstructor;
+            itemId: NumberConstructor;
+            weaponId: NumberConstructor;
+            redCount: NumberConstructor;
+            blueCount: NumberConstructor;
+            special: NumberConstructor;
+        };
+    }[];
     server: {
         name: string;
         regex: RegExp;
