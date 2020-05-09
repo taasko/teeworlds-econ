@@ -64,7 +64,6 @@ export class TwEconClient extends EventEmitter2 {
         // Handle closed socket
         this.socket.on("close", (data: any) => {
             log.debug("Socket closed.", data);
-            // this.socket.destroy();
             setTimeout(() => this.reconnect(), this.reconnectDelay);
         });
 
@@ -73,19 +72,19 @@ export class TwEconClient extends EventEmitter2 {
             log.debug("Socket errored:", data);
         });
 
-        this.socket.on("connected", (data: any) => {
+        this.socket.on("connected", () => {
             log.debug("Socket connected.");
             this.emit("socket.connected");
         });
 
         if (this.useDefaultHandlers) {
             // Handle authentication
-            this.on("generic.password_request", (event, data) => {
+            this.on("generic.password_request", () => {
                 this.send(this.password);
             });
 
-            // Handle authentication
-            this.on("econ.authenticated", (event, data) => {
+            // Load client list
+            this.on("econ.authenticated", () => {
                 this.send("status");
             });
         }
@@ -153,7 +152,7 @@ export class TwEconClient extends EventEmitter2 {
         }
 
         if (!matched) {
-            log.error('UNKNOWN LINE: "' + line + '"');
+            log.debug(`[unparsed line]: "${line}"`);
         }
 
         // Emit a receive event for each received line
