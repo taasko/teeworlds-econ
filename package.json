@@ -2,10 +2,12 @@
   "name": "teeworlds-econ-api",
   "version": "0.0.1",
   "description": "Javascript API for interacting with Teeworlds servers",
-  "main": "./build/index.js",
+  "main": "./dist/index.js",
   "license": "MIT",
   "author": "Richard Lewis",
   "scripts": {
+    "prepublish": "yarn run build",
+    "build": "tsc",
     "dev": "tsc --watch & DEBUG=tw:* NODE_ENV=development nodemon",
     "lint": "eslint \"src/**\""
   },
