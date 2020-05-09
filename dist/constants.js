@@ -337,6 +337,16 @@ exports.EVENT_HANDLERS = {
             regex: new RegExp(/id=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) client=(?<clientVersion>\d{1,4}) name='(?<clientName>.+)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
+        {
+            name: "rcon_command",
+            regex: new RegExp(/ClientID=(?<clientId>\d{1,2}) rcon='(?<command>.+)'/),
+            transforms: DEFAULT_TRANSFORMS,
+        },
+        {
+            name: "econ_command",
+            regex: new RegExp(/cid=(\d{1,2}) cmd='(?<command>.+)'/),
+            transforms: DEFAULT_TRANSFORMS,
+        },
     ],
     "chat": [
         {
