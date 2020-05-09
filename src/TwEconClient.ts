@@ -116,7 +116,7 @@ export class TwEconClient extends EventEmitter2 {
         // If line was matched, set the name and data
         if (match && match.groups && match.groups.eventType && match.groups.eventData) {
             eventType = match.groups.eventType.toLowerCase();
-            eventData = match.groups.eventData.toLowerCase();
+            eventData = match.groups.eventData;
         } else {
             eventType = "generic";
             eventData = line;
@@ -167,36 +167,41 @@ export class TwEconClient extends EventEmitter2 {
 
     transaction(command: string) {
         /*
-        Send a command and return each reply line outputted by the command via
+        Send a command and return each reply event outputted by the command via
         a Promise. Will reject if response is not received within 2 seconds.
         */
         const id = Date.now() + Math.random();
         const data = `echo "begin ${id}"; ${command}; echo "end ${id}"`;
-        const lines: any = [];
+        const capturedEvents: any = [];
         const timeout = 2000;
+
         let started = false;
 
         // Create the Promise, listen for output and run the command.
         const promise = new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => reject(`Transaction timed out. Command: ${command}`), timeout);
+            const timeoutId = setTimeout(() => reject(`Transaction for command "${command}" timed out.`), timeout);
 
-            const listener = (consoleMessage: any) => {
-                const text = consoleMessage.text;
-                if (text === `[Console]: begin ${id}`) {
+            // Listen to all events
+            this.onAny((eventName: string, eventData: any) => {
+                // Detect transaction start and end
+                if (eventName === "console.unknown" && eventData.text === `begin ${id}`) {
                     started = true;
                     return;
-                }
-                if (text === `[Console]: end ${id}`) {
+                } else if (eventName === "console.unknown" && eventData.text === `end ${id}`) {
                     clearTimeout(timeoutId);
-                    resolve(lines);
+                    resolve(capturedEvents);
                     return;
                 }
-                if (started && text.startsWith("[Console]:")) {
-                    lines.push(text);
-                }
-            };
 
-            this.on("socket.receive", listener);
+                // Capture events that are part of this transaction
+                if (started) {
+                    capturedEvents.push({
+                        name: eventName,
+                        data: eventData,
+                    });
+                }
+            });
+
             this.send(data);
         });
 
@@ -205,13 +210,11 @@ export class TwEconClient extends EventEmitter2 {
 
     getSetting(name: string) {
         // Convenience transaction wrapper that returns the value of a server setting.
-        return this.transaction(name).then((lines: any) => {
-            const start = "[Console]: Value: ";
-            for (const line of lines) {
-                if (line.startsWith(start)) {
-                    const data = line.substr(start.length);
-                    return data;
-                }
+        return this.transaction(name).then((events: any) => {
+            // TODO: fix any
+            const event = events.find((e: any) => e.name === "console.value");
+            if (event) {
+                return event.data.value;
             }
 
             return null;

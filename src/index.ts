@@ -4,4 +4,4 @@ import { TwStateManager } from "./TwStateManager";
 export {
     TwEconClient,
     TwStateManager,
-}
+};

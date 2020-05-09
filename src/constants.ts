@@ -310,6 +310,18 @@ export const EVENT_HANDLERS = {
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
+    "console": [
+        {
+            name: "value",
+            regex: new RegExp(/Value: (?<value>.*)/),
+            transforms: DEFAULT_TRANSFORMS,
+        },
+        {
+            name: "unknown",
+            regex: new RegExp(/(?<text>.*)/),
+            transforms: DEFAULT_TRANSFORMS,
+        },
+    ],
     "server": [
 
         {
