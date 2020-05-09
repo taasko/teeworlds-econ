@@ -228,6 +228,7 @@ const DEFAULT_TRANSFORMS = {
     port: Number,
     clientId: Number,
     teamId: Number,
+    fromTeamId: Number,
     victimId: Number,
     itemId: Number,
     weaponId: Number,
@@ -237,7 +238,7 @@ const DEFAULT_TRANSFORMS = {
 };
 
 // Regex for chat messages
-export const CHAT_REGEX = new RegExp(/(?<clientId>\d{1,2}):(?<UNKNOWN>\d{1,2}):(?<clientName>.*): (?<text>.*)/);
+export const CHAT_REGEX = new RegExp(/(?<teamId>\d{1,2}):(?<clientId>\d{1,2}):(?<clientName>.*): (?<text>.*)/);
 
 // Regex for detecting a line with an event that we want to handle
 export const EVENT_LINE_REGEX = new RegExp(/\[(?<eventType>[^\].]*)\]:\W?(?<eventData>.*)/);
@@ -400,6 +401,15 @@ export const EVENT_HANDLERS = {
             transforms: DEFAULT_TRANSFORMS,
         },
         {
+            // New team join format
+            name: "team_join",
+            regex: new RegExp(
+                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/,
+            ),
+            transforms: DEFAULT_TRANSFORMS,
+        },
+        {
+            // Old team join format
             name: "team_join",
             regex: new RegExp(
                 /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/,
