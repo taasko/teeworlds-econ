@@ -37,11 +37,15 @@ const password = "secret"
 
 const econClient = new TwEconClient(host, port, password);
 
+econ.on("game.start", (event) => {
+    console.log(event);
+});
+
 econ.connect();
 ```
 
 
-## Developing 
+## Developing
 
 ```
 yarn install
