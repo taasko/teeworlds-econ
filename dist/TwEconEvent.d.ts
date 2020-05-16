@@ -11,6 +11,7 @@ export interface TwEconEvent {
     teamplay: string;
     mapName: string;
     teamId: number;
+    fromTeamId: number;
     itemId: number;
     victimId: number;
     victimName: string;

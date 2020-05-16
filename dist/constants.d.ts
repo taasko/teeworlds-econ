@@ -59,6 +59,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -74,6 +75,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -89,6 +91,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -104,6 +107,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -119,6 +123,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -134,6 +139,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -149,6 +155,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -164,6 +171,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;
@@ -179,6 +187,7 @@ export declare const EVENT_HANDLERS: {
             port: NumberConstructor;
             clientId: NumberConstructor;
             teamId: NumberConstructor;
+            fromTeamId: NumberConstructor;
             victimId: NumberConstructor;
             itemId: NumberConstructor;
             weaponId: NumberConstructor;

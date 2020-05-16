@@ -224,6 +224,7 @@ const DEFAULT_TRANSFORMS = {
     port: Number,
     clientId: Number,
     teamId: Number,
+    fromTeamId: Number,
     victimId: Number,
     itemId: Number,
     weaponId: Number,

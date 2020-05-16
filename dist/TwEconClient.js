@@ -24,6 +24,9 @@ class TwEconClient extends eventemitter2_1.EventEmitter2 {
             port: this.port,
         });
     }
+    async disconnect() {
+        this.socket.destroy();
+    }
     async reconnect() {
         // TODO: exponential backoff (delay reconnection when reconnecting fails)
         log.debug("Reconnecting...");
@@ -31,6 +34,11 @@ class TwEconClient extends eventemitter2_1.EventEmitter2 {
             host: this.host,
             port: this.port,
         });
+    }
+    setServer(host, port, password) {
+        this.host = host;
+        this.port = port;
+        this.password = password;
     }
     createSocket() {
         this.socket = new net_1.Socket();

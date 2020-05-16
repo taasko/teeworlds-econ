@@ -11,7 +11,9 @@ export declare class TwEconClient extends EventEmitter2 {
     reconnectDelay: number;
     constructor(host: string, port: number, password: string, useDefaultHandlers?: boolean);
     connect(): Promise<void>;
+    disconnect(): Promise<void>;
     reconnect(): Promise<void>;
+    setServer(host: string, port: number, password: string): void;
     createSocket(): void;
     processBuffer(): void;
     processLine(line: string): void;
