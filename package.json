@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "kill-port": "^1.6.0",
     "nodemon": "^2.0.2",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "tslint": "^6.1.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "^1.16.0",
