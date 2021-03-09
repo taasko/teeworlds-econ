@@ -1,8 +1,8 @@
 import { Socket } from "net";
 import { EventEmitter2 } from "eventemitter2";
 
-import logger from "./utils/logger";
-import { EVENT_HANDLERS, EVENT_LINE_REGEX } from "./constants";
+import logger from "../utils/logger";
+import { EVENT_HANDLERS, EVENT_LINE_REGEX } from "../constants";
 import { TwEconEvent } from "./TwEconEvent";
 import { TwConsoleMessage } from "./TwConsoleMessage";
 
@@ -13,44 +13,75 @@ export class TwEconClient extends EventEmitter2 {
     host: string;
     port: number;
     password: string;
-    socket: any;
-    buffer: Buffer; // Buffer for received data
+    socket: Socket | undefined;
+    buffer: Buffer = Buffer.from("");; // Buffer for received data
     encoding: "utf-8" = "utf-8";
     useDefaultHandlers: boolean;
     reconnectDelay: number = 2000;
+    connected: boolean = false;
 
     constructor(
-        host: string,
-        port: number,
-        password: string,
+        host?: string,
+        port?: number,
+        password?: string,
         useDefaultHandlers = true,
     ) {
         super();
+        this.host = host || "";
+        this.port = port || 0;
+        this.password = password || "";
+        this.useDefaultHandlers = useDefaultHandlers;
+        this.reconnectDelay = 2000;
+        this.setMaxListeners(100);
+    }
+
+    setServer(host: string, port: number, password: string) {
+        log.debug("setServer");
         this.host = host;
         this.port = port;
         this.password = password;
-        this.useDefaultHandlers = useDefaultHandlers;
-        this.reconnectDelay = 2000;
     }
 
     async connect() {
+        log.debug("connect");
+        if (this.socket) {
+            this.socket.destroy();
+        }
+
+        if (!this.host || !this.port) {
+            throw Error("Host or port is missing.");
+        }
+
         this.createSocket();
+        // @ts-ignore - "Object is possibly 'undefined'." isn't relevant as the socket is created by `createSocket`
         this.socket.connect({
             host: this.host,
             port: this.port,
         });
     }
 
-    async reconnect() {
-        // TODO: exponential backoff (delay reconnection when reconnecting fails)
-        log.debug("Reconnecting...");
-        this.socket.connect({
-            host: this.host,
-            port: this.port,
-        });
+    disconnect() {
+        log.debug("disconnect");
+        this.socket && this.socket.destroy()
     }
+
+    // FIXME: implement automatic reconnect
+    // async reconnect() {
+    //     log.debug("reconnect");
+
+    //     if (!this.socket) {
+    //         log.warn("no socket to reconnect to!");
+    //         return;
+    //     }
+
+    //     this.socket.connect({
+    //         host: this.host,
+    //         port: this.port,
+    //     });
+    // }
 
     createSocket() {
+        log.debug("createSocket");
         this.socket = new Socket();
 
         this.buffer = Buffer.from("");
@@ -62,18 +93,21 @@ export class TwEconClient extends EventEmitter2 {
         });
 
         // Handle closed socket
-        this.socket.on("close", (data: any) => {
-            log.debug("Socket closed.", data);
-            // this.socket.destroy();
-            setTimeout(() => this.reconnect(), this.reconnectDelay);
-        });
+        // FIXME: don't reconnect if connection closed on purpose, only if it errors
+        // this.socket.on("close", (data: any) => {
+        //     log.debug("Socket closed.", data);
+        //     this.connected = false;
+        //     setTimeout(() => this.reconnect(), this.reconnectDelay);
+        // });
 
         // Handle errors
         this.socket.on("error", (data: any) => {
+            this.connected = false;
             log.debug("Socket errored:", data);
         });
 
         this.socket.on("connected", (data: any) => {
+            this.connected = true;
             log.debug("Socket connected.");
             this.emit("socket.connected");
         });
@@ -110,14 +144,14 @@ export class TwEconClient extends EventEmitter2 {
         // Handle a message received from the TW server
         // Look for lines that have a named event type and event data
         const match = line.match(EVENT_LINE_REGEX);
-        let eventType;
 
+        let eventType;
         let eventData;
 
         // If line was matched, set the name and data
         if (match && match.groups && match.groups.eventType && match.groups.eventData) {
             eventType = match.groups.eventType.toLowerCase();
-            eventData = match.groups.eventData.toLowerCase();
+            eventData = match.groups.eventData;
         } else {
             eventType = "generic";
             eventData = line;
@@ -140,12 +174,14 @@ export class TwEconClient extends EventEmitter2 {
                     if (handler.transforms) {
                         Object.keys(eventParams).forEach((key) => {
                             if (handler.transforms[key] !== undefined) {
+                                // FIXME: remove ignore
+                                // @ts-ignore
                                 eventParams[key] = handler.transforms[key](eventParams[key]);
                             }
                         });
                     }
 
-                    this.emit(eventType + "." + handler.name, eventParams as TwEconEvent);
+                    this.processEvent(eventType, handler.name, eventParams as TwEconEvent)
                     matched = true;
                     break;
                 }
@@ -153,7 +189,7 @@ export class TwEconClient extends EventEmitter2 {
         }
 
         if (!matched) {
-            log.error('UNKNOWN LINE: "' + line + '"');
+            log.warn(`UNKNOWN LINE: "${line}"`);
         }
 
         // Emit a receive event for each received line
@@ -161,43 +197,72 @@ export class TwEconClient extends EventEmitter2 {
         this.emit("socket.receive", consoleMessage);
     }
 
+    processEvent(eventType: string, eventName: string, eventParams: TwEconEvent) {
+        log.debug("EVENT:", eventType + "." + eventName, eventParams);
+        this.emit(eventType + "." + eventName, eventParams);
+    }
+
     send(data: string) {
         // Send data to econ (usually commands)
+
+        if (!this.socket) {
+            log.warn("no socket to send data to!");
+            return;
+        }
+
         this.socket.write(data + "\n", "utf-8");
     }
 
     transaction(command: string) {
+        log.debug("transaction", command)
         /*
         Send a command and return each reply line outputted by the command via
         a Promise. Will reject if response is not received within 2 seconds.
         */
-        const id = Date.now() + Math.random();
-        const data = `echo "begin ${id}"; ${command}; echo "end ${id}"`;
+        const id = Date.now() + "-" + Math.random();
+        const data = `echo "transaction_begin ${id}"; ${command}; echo "transaction_end ${id}"`;
         const lines: any = [];
         const timeout = 2000;
         let started = false;
 
         // Create the Promise, listen for output and run the command.
         const promise = new Promise((resolve, reject) => {
-            const timeoutId = setTimeout(() => reject("Transaction timed out"), timeout);
-
-            const listener = (consoleMessage: any) => {
-                const text = consoleMessage.text;
-                if (text === `[Console]: begin ${id}`) {
+            const listenBegin = (event: any) => {
+                if (event.id === id) {
                     started = true;
-                    return;
-                }
-                if (text === `[Console]: end ${id}`) {
-                    clearTimeout(timeoutId);
-                    resolve(lines);
-                    return;
-                }
-                if (started && text.startsWith("[Console]:")) {
-                    lines.push(text);
                 }
             };
 
-            this.on("socket.receive", listener);
+            const listenEnd = (event: any) => {
+                if (event.id === id) {
+                    clearListeners();
+                    clearTimeout(timeoutId);
+                    resolve(lines);
+                }
+            };
+
+            const listenValue = (value: any) => {
+                if (started) {
+                    lines.push(value);
+                }
+            };
+
+            const timeoutId = setTimeout(() => {
+                log.warn("transaction timed out!", command)
+                clearListeners();
+                reject("Transaction timed out")
+            }, timeout);
+
+            const clearListeners = () => {
+                this.removeListener("console.transaction_begin", listenBegin);
+                this.removeListener("console.transaction_end", listenEnd);
+                this.removeListener("console.value", listenValue);
+            }
+
+            this.on("console.transaction_begin", listenBegin);
+            this.on("console.transaction_end", listenEnd);
+            this.on("console.value", listenValue);
+
             this.send(data);
         });
 
@@ -207,12 +272,8 @@ export class TwEconClient extends EventEmitter2 {
     getSetting(name: string) {
         // Convenience transaction wrapper that returns the value of a server setting.
         return this.transaction(name).then((lines: any) => {
-            const start = "[Console]: Value: ";
-            for (const line of lines) {
-                if (line.startsWith(start)) {
-                    const data = line.substr(start.length);
-                    return data;
-                }
+            if (lines.length) {
+                return lines[0].data
             }
 
             return null;

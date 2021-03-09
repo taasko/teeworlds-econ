@@ -1,10 +1,12 @@
-export const TEAMS = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.EVENT_HANDLERS = exports.EVENT_LINE_REGEX = exports.CHAT_REGEX = exports.TW_SETTINGS = exports.WEAPONS = exports.PICKUPS = exports.TEAMS = void 0;
+exports.TEAMS = {
     SPECTATE: -1,
     RED: 0,
     BLUE: 1,
 };
-
-export const PICKUPS = {
+exports.PICKUPS = {
     HEART: 0,
     SHIELD: 1,
     GRENADE_LAUNCHER: 2,
@@ -12,8 +14,7 @@ export const PICKUPS = {
     LASER: 4,
     KATANA: 5,
 };
-
-export const WEAPONS = {
+exports.WEAPONS = {
     TEAM_SWITCH: -3,
     DEATHTILE: -1,
     HAMMER: 0,
@@ -23,10 +24,8 @@ export const WEAPONS = {
     LASER: 4,
     KATANA: 4,
 };
-
-
 // Teeworlds Settings Defaults
-export const TW_SETTINGS = [
+exports.TW_SETTINGS = [
     {
         id: "sv_warmup",
         name: "Warmup",
@@ -44,16 +43,14 @@ export const TW_SETTINGS = [
     {
         id: "sv_timelimit",
         name: "Time limit",
-        description:
-            "Time limit of the game (in case of equal points there will be sudden death)",
+        description: "Time limit of the game (in case of equal points there will be sudden death)",
         default: "0",
         type: "number",
     },
     {
         id: "sv_gametype",
         name: "Game type",
-        description:
-            "Gametype (DM/CTF/TDM/LMS/LTS) (This setting needs the map to be reloaded in order to take effect)",
+        description: "Gametype (DM/CTF/TDM/LMS/LTS) (This setting needs the map to be reloaded in order to take effect)",
         default: "dm",
         type: "choice",
         choices: [
@@ -81,32 +78,28 @@ export const TW_SETTINGS = [
     {
         id: "sv_motd",
         name: "MOTD",
-        description:
-            "Message of the day, shown in server info and when joining a server",
+        description: "Message of the day, shown in server info and when joining a server",
         default: "",
         type: "text",
     },
     {
         id: "sv_player_slots",
         name: "Player slots",
-        description:
-            'Number of slots to reserve for players. Replaces "svspectatorslots"',
+        description: 'Number of slots to reserve for players. Replaces "svspectatorslots"',
         default: "8",
         type: "number",
     },
     {
         id: "sv_max_clients",
         name: "Max clients",
-        description:
-            'Maximum number of connected clients',
+        description: 'Maximum number of connected clients',
         default: "",
         type: "number",
     },
     {
         id: "sv_teambalance_time",
         name: "Teambalance time",
-        description:
-            "Time in minutes after the teams are uneven, to auto balance",
+        description: "Time in minutes after the teams are uneven, to auto balance",
         default: "1",
         type: "number",
     },
@@ -127,16 +120,14 @@ export const TW_SETTINGS = [
     {
         id: "sv_player_ready_mode",
         name: "Player ready mode",
-        description:
-            "When enabled, players can pause/unpause the game and start the game on warmup via their ready state",
+        description: "When enabled, players can pause/unpause the game and start the game on warmup via their ready state",
         default: "0",
         type: "boolean",
     },
     {
         id: "sv_strict_spectate_mode",
         name: "Strict spectate mode",
-        description:
-            "Restricts information like health, ammo and armour in spectator mode",
+        description: "Restricts information like health, ammo and armour in spectator mode",
         default: "0",
         type: "boolean",
     },
@@ -150,8 +141,7 @@ export const TW_SETTINGS = [
     {
         id: "sv_skill_level",
         name: "Skill level",
-        description:
-            "Skill level shown in serverbrowser (0 = casual, 1 = normal, 2 = competitive)",
+        description: "Skill level shown in serverbrowser (0 = casual, 1 = normal, 2 = competitive)",
         default: "1",
         type: "choice",
         choices: [
@@ -191,8 +181,7 @@ export const TW_SETTINGS = [
     {
         id: "sv_vote_kick_bantime",
         name: "Vote kick bantime",
-        description:
-            "Time in minutes to ban a player if kicked by voting (0 equals only kick)",
+        description: "Time in minutes to ban a player if kicked by voting (0 equals only kick)",
         default: "5",
         type: "number",
     },
@@ -206,16 +195,14 @@ export const TW_SETTINGS = [
     {
         id: "sv_inactivekick_time",
         name: "Inactive kick time",
-        description:
-            "Time in minutes after an inactive player will be taken care of",
+        description: "Time in minutes after an inactive player will be taken care of",
         default: "3",
         type: "number",
     },
     {
         id: "sv_inactivekick",
         name: "Inactive kick",
-        description:
-            "How to deal with inactive players (0 = move to spectator, 1 = move to free spectator slot/kick, 2 = kick)",
+        description: "How to deal with inactive players (0 = move to spectator, 1 = move to free spectator slot/kick, 2 = kick)",
         default: "1",
         type: "choice",
         choices: [
@@ -234,13 +221,11 @@ export const TW_SETTINGS = [
     {
         id: "sv_vote_spectate_rejoindelay",
         name: "Vote spectate rejoindelay",
-        description:
-            "How many minutes to wait before a player can rejoin after being moved to spectators by vote",
+        description: "How many minutes to wait before a player can rejoin after being moved to spectators by vote",
         default: "3",
         type: "number",
     },
 ];
-
 // Functions to transform a regex match to a different data type. These could
 // be any functions but currently we only need to convert to numbers.
 const DEFAULT_TRANSFORMS = {
@@ -255,20 +240,10 @@ const DEFAULT_TRANSFORMS = {
     special: Number,
     score: Number,
 };
-
 // Regex for chat messages
-export const CHAT_REGEX = new RegExp(
-    /(?<clientId>\d{1,2}):(?<UNKNOWN>\d{1,2}):(?<clientName>.*): (?<text>.*)/
-);
-
+exports.CHAT_REGEX = new RegExp(/(?<clientId>\d{1,2}):(?<UNKNOWN>\d{1,2}):(?<clientName>.*): (?<text>.*)/);
 // Regex for detecting a line with an event that we want to handle
-export const EVENT_LINE_REGEX = new RegExp(
-    /\[(?<eventType>[^\].]*)\]:\W?(?<eventData>.*)/
-);
-
-
-
-
+exports.EVENT_LINE_REGEX = new RegExp(/\[(?<eventType>[^\].]*)\]:\W?(?<eventData>.*)/);
 /* FIXME: Handle unknown lines:
 "[12:23:16][server]: moved client 0 to team -1"
 "[12:55:15][server]: moved client 0 to team -1"
@@ -277,10 +252,9 @@ export const EVENT_LINE_REGEX = new RegExp(
 "[18:29:29][Console]: No such command: adasfasggag."
 "[01:45:32][net_ban]: ban 'XXX.XXX.XXX.XXX' expired"
 */
-
 // Regexes for matching data from specific Econ events
 // FIXME: remove any
-export const EVENT_HANDLERS: any = {
+exports.EVENT_HANDLERS = {
     generic: [
         {
             name: "password_request",
@@ -304,9 +278,7 @@ export const EVENT_HANDLERS: any = {
         },
         {
             name: "authenticated",
-            regex: new RegExp(
-                /Authentication successful. External console access granted./
-            ),
+            regex: new RegExp(/Authentication successful. External console access granted./),
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
@@ -339,9 +311,7 @@ export const EVENT_HANDLERS: any = {
         },
         {
             name: "sending_heartbeats",
-            regex: new RegExp(
-                /chose '(?<server>.+)' as master, sending heartbeats/
-            ),
+            regex: new RegExp(/chose '(?<server>.+)' as master, sending heartbeats/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -363,48 +333,36 @@ export const EVENT_HANDLERS: any = {
         },
         {
             name: "client_dropped",
-            regex: new RegExp(
-                /client dropped\. cid=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) reason='(?<reason>.*)'/
-            ),
+            regex: new RegExp(/client dropped\. cid=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) reason='(?<reason>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
     server: [
         {
             name: "player_ready",
-            regex: new RegExp(
-                /player is ready\. ClientID=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5})/
-            ),
+            regex: new RegExp(/player is ready\. ClientID=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5})/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "client_dropped",
-            regex: new RegExp(
-                /client dropped\. cid=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) reason='(?<reason>.*)'/
-            ),
+            regex: new RegExp(/client dropped\. cid=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) reason='(?<reason>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "player_entered",
-            regex: new RegExp(
-                /player has entered the game\. ClientID=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5})/
-            ),
+            regex: new RegExp(/player has entered the game\. ClientID=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5})/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             // TODO: report if user is admin. Such messages have ` (Admin)` at the end.
             name: "player_info",
-            regex: new RegExp(
-                /id=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) client=(?<clientVersion>\d{1,4}) name='(?<clientName>.+)' score=(?<score>-?\d{1,4})/
-            ),
+            regex: new RegExp(/id=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) client=(?<clientVersion>\d{1,4}) name='(?<clientName>.+)' score=(?<score>-?\d{1,4})/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             // TODO: report if user is admin. Such messages have ` (Admin)` at the end.
             name: "player_info",
-            regex: new RegExp(
-                /id=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) client=(?<clientVersion>\d{1,4}) name='(?<clientName>.+)'/
-            ),
+            regex: new RegExp(/id=(?<clientId>\d{1,2}) addr=(?<ip>\d{1,3}.\d{1,3}.\d{1,3}.\d{1,3}):(?<port>\d{2,5}) client=(?<clientVersion>\d{1,4}) name='(?<clientName>.+)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -412,16 +370,15 @@ export const EVENT_HANDLERS: any = {
             name: "client_command",
             regex: new RegExp(/cid=(?<clientId>\d{1,2}) cmd='(?<text>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
-
         },
     ],
     net_ban: [
-        // tw:TwEconClient UNKNOWN LINE: "[22:08:22][net_ban]: banned 'XXX.XXX.XXX.XXX' for 1 minute (Stressing network)"
+    // tw:TwEconClient UNKNOWN LINE: "[22:08:22][net_ban]: banned 'XXX.XXX.XXX.XXX' for 1 minute (Stressing network)"
     ],
     chat: [
         {
             name: "chat",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -433,23 +390,21 @@ export const EVENT_HANDLERS: any = {
     teamchat: [
         {
             name: "teamchat",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
     whisper: [
         {
             name: "whisper",
-            regex: CHAT_REGEX,
+            regex: exports.CHAT_REGEX,
             transforms: DEFAULT_TRANSFORMS,
         },
     ],
     game: [
         {
             name: "start",
-            regex: new RegExp(
-                /start match type='(?<matchType>.*)' teamplay='(?<teamplay>\d{1,2})'/
-            ),
+            regex: new RegExp(/start match type='(?<matchType>.*)' teamplay='(?<teamplay>\d{1,2})'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -465,38 +420,28 @@ export const EVENT_HANDLERS: any = {
         {
             // New team join format
             name: "team_join",
-            regex: new RegExp(
-                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/,
-            ),
+            regex: new RegExp(/team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<fromTeamId>-?\d+)->(?<teamId>-?\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             // Old team join format
             name: "team_join",
-            regex: new RegExp(
-                /team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/
-            ),
+            regex: new RegExp(/team_join player='(?<clientId>\d{1,2}):(?<clientName>.*)' m?_?T?t?eam=(?<teamId>-?\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "pickup",
-            regex: new RegExp(
-                /pickup player='(?<clientId>\d{1,2}):(?<clientName>.*)' item=(?<itemId>\d+)/
-            ),
+            regex: new RegExp(/pickup player='(?<clientId>\d{1,2}):(?<clientName>.*)' item=(?<itemId>\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "flag_grab",
-            regex: new RegExp(
-                /flag_grab player='(?<clientId>\d{1,2}):(?<clientName>.*)'/
-            ),
+            regex: new RegExp(/flag_grab player='(?<clientId>\d{1,2}):(?<clientName>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "flag_return",
-            regex: new RegExp(
-                /flag_return player='(?<clientId>\d{1,2}):(?<clientName>.*)'/
-            ),
+            regex: new RegExp(/flag_return player='(?<clientId>\d{1,2}):(?<clientName>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
@@ -506,44 +451,32 @@ export const EVENT_HANDLERS: any = {
         },
         {
             name: "flag_capture",
-            regex: new RegExp(
-                /flag_capture player='(?<clientId>\d{1,2}):(?<clientName>.*)' team=(?<team>\d{1,2}) time=(?<time>\d{1,2}.\d{1,2})/
-            ),
+            regex: new RegExp(/flag_capture player='(?<clientId>\d{1,2}):(?<clientName>.*)' team=(?<team>\d{1,2}) time=(?<time>\d{1,2}.\d{1,2})/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "flag_capture",
-            regex: new RegExp(
-                /flag_capture player='(?<clientId>\d{1,2}):(?<clientName>.*)'/
-            ),
+            regex: new RegExp(/flag_capture player='(?<clientId>\d{1,2}):(?<clientName>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "leave",
-            regex: new RegExp(
-                /leave player='(?<clientId>\d{1,2}):(?<clientName>.*)'/
-            ),
+            regex: new RegExp(/leave player='(?<clientId>\d{1,2}):(?<clientName>.*)'/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "kill",
-            regex: new RegExp(
-                /kill killer='(?<clientId>\d{1,2}):(?<clientName>.*)' victim='(?<victimId>\d{1,2}):(?<victimName>.*)' weapon=(?<weaponId>-?\d+) special=(?<special>-?\d+)/
-            ),
+            regex: new RegExp(/kill killer='(?<clientId>\d{1,2}):(?<clientName>.*)' victim='(?<victimId>\d{1,2}):(?<victimName>.*)' weapon=(?<weaponId>-?\d+) special=(?<special>-?\d+)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "teams_balanced",
-            regex: new RegExp(
-                /Teams are balanced \((red=(?<redCount>\d{1,2}) blue=(?<blueCount>\d{1,2}))\)/
-            ),
+            regex: new RegExp(/Teams are balanced \((red=(?<redCount>\d{1,2}) blue=(?<blueCount>\d{1,2}))\)/),
             transforms: DEFAULT_TRANSFORMS,
         },
         {
             name: "teams_not_balanced",
-            regex: new RegExp(
-                /Teams are NOT balanced \((red=(?<redCount>\d{1,2}) blue=(?<blueCount>\d{1,2}))\)/
-            ),
+            regex: new RegExp(/Teams are NOT balanced \((red=(?<redCount>\d{1,2}) blue=(?<blueCount>\d{1,2}))\)/),
             transforms: DEFAULT_TRANSFORMS,
         },
     ],

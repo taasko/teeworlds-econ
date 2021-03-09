@@ -1,4 +1,4 @@
-import * as debugFunc from "debug";
+import debugFunc from "debug";
 
 
 export default (namespace: string) => {
@@ -8,6 +8,7 @@ export default (namespace: string) => {
 
     return {
         debug: log,
+        warn: debugFunc(namespace),
         error: debugFunc(namespace),
     };
 };

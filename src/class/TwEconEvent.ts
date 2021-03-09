@@ -20,4 +20,5 @@ export interface TwEconEvent {
     special: number;
     redCount: number;
     blueCount: number;
+    score: number;
 }

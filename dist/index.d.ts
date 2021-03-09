@@ -7,15 +7,4 @@ import { TwEconEvent } from "./class/TwEconEvent";
 import { TwGameState } from "./class/TwGameState";
 import { TwServerState } from "./class/TwServerState";
 import { TwStateManager } from "./class/TwStateManager";
-
-export {
-    constants,
-    TwChatMessage,
-    TwClient,
-    TwConsoleMessage,
-    TwEconClient,
-    TwEconEvent,
-    TwGameState,
-    TwServerState,
-    TwStateManager,
-};
+export { constants, TwChatMessage, TwClient, TwConsoleMessage, TwEconClient, TwEconEvent, TwGameState, TwServerState, TwStateManager, };
