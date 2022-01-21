@@ -6,7 +6,7 @@ const password = "";
 const econ = new TwEconClient(host, port, password);
 
 econ.on("game.start", (event) => {
-    console.log(event);
+  console.log(event);
 });
 
 econ.connect();
