@@ -1,21 +1,7 @@
 {
-    "compilerOptions": {
-        "target": "es2017",
-        "module": "commonjs",
-        "sourceMap": true,
-        "outDir": "./build",
-        "baseUrl": ".",
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true,
-        "allowUnreachableCode": false
-    },
-    "include": [
-        "src/**/*.ts",
-    ],
-    "exclude": ["node_modules"]
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build"
+  },
+  "include": ["src/**/*.ts"]
 }
