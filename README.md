@@ -7,7 +7,6 @@ API for interaction, listening to events and sending commands. `TwStateManager`
 on the other hand is a higher level abstraction that keeps track of server
 state and game state as well as some other things.
 
-
 ## Prerequisites
 
 To use this you need a Teeworlds server with econ enabled. To enable it add the
@@ -25,25 +24,23 @@ server itself you also need to add this to your config:
 ec_bindaddr 0.0.0.0
 ```
 
-
 ## Usage
 
-```
+```typescript
 import { TwEconClient } from "./TwEconClient";
 
-const host = "localhost"
-const port = 8303
-const password = "secret"
+const host = "localhost";
+const port = 8303;
+const password = "secret";
 
 const econClient = new TwEconClient(host, port, password);
 
 econ.connect();
 ```
 
+## Developing
 
-## Developing 
-
-```
+```bash
 yarn install
 yarn dev
 ```
